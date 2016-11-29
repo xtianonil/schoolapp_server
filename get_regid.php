@@ -1,4 +1,5 @@
 <?php
+	/*
 	include "db.php";
 	if(isset($_POST['register']))
 	{
@@ -9,4 +10,5 @@
 		else
 			echo "error";
 	}
+	*/
  ?>
