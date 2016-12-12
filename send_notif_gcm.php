@@ -1,17 +1,17 @@
 <?php
-/*
-	source: https://gist.github.com/prime31/5675017
-*/
+
 // API access key from Google API's Console
 define( 'API_ACCESS_KEY', 'AIzaSyBwsNSatm-pheq6yX6x7m3LTdJyxKqTlQ4' );
-$registrationIds = array( $_GET['id'] );
+//$registrationIds = array( $_GET['id'] );
+$registrationIds = $_POST['regids'];
+$actual_msg = $_POST['notif_msg'];
 // prep the bundle
 $msg = array
 (
-	'message' 	=> 'here is a message. message',
-	'title'		=> 'This is a title. title',
-	'subtitle'	=> 'This is a subtitle. subtitle',
-	'tickerText'	=> 'Ticker text here...Ticker text here...Ticker text here',
+	'message' 	=> $actual_msg,
+	'title'		=> 'Notification',
+	'subtitle'	=> 'Subtitle',
+	'tickerText'	=> $actual_msg,
 	'vibrate'	=> 1,
 	'sound'		=> 1,
 	'largeIcon'	=> 'large_icon',

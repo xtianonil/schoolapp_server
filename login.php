@@ -13,9 +13,10 @@
  */
  ?>
 <?php
-	include "db.php";
+	
 	if(isset($_POST['login']))
 	{
+		include "db.php";
 		//$username=mysqli_real_escape_string(htmlspecialchars(trim($_POST['username'])));
 		//$password=mysqli_real_escape_string(htmlspecialchars(trim($_POST['password'])));
 		$username = $_POST['username'];
