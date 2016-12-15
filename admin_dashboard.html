@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ADMIN DASHBOARD</title>
+<!--
+	jquery mobile
+-->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+
+<!--
+	jquery 3.1.1
+-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".user_affinity_btn").click(function(){
+			$.post("http://192.168.0.18/school_connect_server/user_affinity.php")
+				.done(function(data){
+					alert("Operation successful.");
+				});
+			});//end of user affinity btn
+		$(".truncate_btn").click(function(){
+			$.post("http://192.168.0.18/school_connect_server/table_trunc.php",{table:$(".table_dropdown").val()})
+				.done(function(data){
+					alert("Operation successful.");
+				});
+			});//end of truncate_btn.click
+		$(".load_newusers_btn").click(function(){
+			$.post("http://192.168.0.18/school_connect_server/csv_insert_newusers.php")
+				.done(function(data){
+					alert("Operation successful.");
+				});
+			});
+	});//end of $(document).ready(function(){});
+</script>
+</head>
+
+<body>
+	<table>
+		<tr>
+			<td>Load new users from csv</td>
+			<td><button class="load_newusers_btn">Load new users</button></td>
+		</tr>
+		<tr>
+			<td>2nd part of batch encode</td>
+			<td><button class="user_affinity_btn">Set affinity</button></td>
+		</tr>
+		<tr>
+			<td>Table:</td>
+			<td><select class="table_dropdown">
+					<option>user_role</option>
+					<option>user_temp</option>
+					<option>user</option>
+				</select></td>
+			<td><button class="truncate_btn">Truncate</button></td>
+		</tr>
+	</table>
+</body>
+
+</html>

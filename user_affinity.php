@@ -4,55 +4,88 @@
 	premise: multiple user accounts were created
 	parent/guardian to student
 	*/
-	$z=0;
-
 	$sql = "SELECT * FROM user_temp GROUP BY std_num";
 	$select = mysqli_query($con,$sql);
-	$numrows = mysqli_num_rows($select);
-	$rows = array();
-	while($row=mysqli_fetch_array($select))
-		$rows[]= $row;
-	for ($i=0; $i < $numrows; $i++)
-	{	//iterate through each student number
+	if ($select)
+	{
+		$rows = array();
+		while($row=mysqli_fetch_array($select))
+			$rows[]= $row;
+		for ($i=0; $i < mysqli_num_rows($select); $i++)
+		{	//this for every std_num
+			//create user account (student)
+			$sql_std = "INSERT INTO user (lname) VALUES ('')";
+			mysqli_query($con,$sql_std);
+			//get id of last inserted user (student)
+			$stdid_created = mysqli_insert_id($con);
+			//create record on user_role (student)
+			$sql_std_role = "INSERT INTO user_role (std_id,role,group_id) VALUES ('".$stdid_created."','student',".$rows[$i]['group_id'].")";
+			mysqli_query($con,$sql_std_role);
 
-		/*
-		create student account
-		*/
-		
-		$sql_user = "INSERT INTO user (lname) VALUES ('')";
-		$sql_user_add = mysqli_query($con,$sql_user);
+			//iterate through ALL users
+			$sql_users = "SELECT * FROM user_temp WHERE std_num LIKE '" . $rows[$i]['std_num'] ."'";
+			$select_users = mysqli_query($con,$sql_users);
+			if ($select_users)
+			{
+				$rows_users = array();
+				while($row_users=mysqli_fetch_array($select_users))
+					$rows_users[]=$row_users;
+				for ($j=0; $j < mysqli_num_rows($select_users); $j++)
+				{
+					//create user account for parents
+					if ( $rows_users[$j]['relation'] === "father" )
+					{
+						$sql_father = "INSERT INTO user (lname,fname,mname,email,phone_num) 
+								   VALUES ('"	.$rows_users[$j]['lname']."','"
+								   				.$rows_users[$j]['fname']."','"
+								   				.$rows_users[$j]['mname']."','"
+								   				.$rows_users[$j]['email']."','"
+								   				.$rows_users[$j]['phone_num']."')";
+						mysqli_query($con,$sql_father);
+						$fatherid_created = mysqli_insert_id($con);
+						//create user acct for std_id's father
+						$sql_father_role = "INSERT INTO user_role (std_id,parent_id,parent_type,role,group_id) 
+											VALUES ('".$stdid_created."','".$fatherid_created."','father','parent',".$rows_users[$j]['group_id'].")";
+						mysqli_query($con,$sql_father_role);
+					}
+					else if ( $rows_users[$j]['relation'] === "mother" )
+					{
+						$sql_mother = "INSERT INTO user (lname,fname,mname,email,phone_num) 
+								   VALUES ('"	.$rows_users[$j]['lname']."','"
+								   				.$rows_users[$j]['fname']."','"
+								   				.$rows_users[$j]['mname']."','"
+								   				.$rows_users[$j]['email']."','"
+								   				.$rows_users[$j]['phone_num']."')";
+						mysqli_query($con,$sql_mother);
+						$motherid_created = mysqli_insert_id($con);
+						//create user acct for std_id's mother
+						$sql_mother_role = "INSERT INTO user_role (std_id,parent_id,parent_type,role,group_id) 
+											VALUES ('".$stdid_created."','".$motherid_created."','mother','parent',".$rows_users[$j]['group_id'].")";
+						mysqli_query($con,$sql_mother_role);
+					}
+					else if ( $rows_users[$j]['relation'] === "guardian" )
+					{
+						$sql_guardian = "INSERT INTO user (lname,fname,mname,email,phone_num) 
+								   VALUES ('"	.$rows_users[$j]['lname']."','"
+								   				.$rows_users[$j]['fname']."','"
+								   				.$rows_users[$j]['mname']."','"
+								   				.$rows_users[$j]['email']."','"
+								   				.$rows_users[$j]['phone_num']."')";
+						mysqli_query($con,$sql_guardian);
+						$guardianid_created = mysqli_insert_id($con);
+						//create user acct for std_id's guardian
+						$sql_guardian_role = "INSERT INTO user_role (std_id,parent_id,parent_type,role,group_id) 
+											VALUES ('".$stdid_created."','".$guardianid_created."','guardian','parent',".$rows_users[$j]['group_id'].")";
+						mysqli_query($con,$sql_guardian_role);
+					}
+				}//end of for for
+				
+			}//end of if select users
+				
+		}//end of for
 
-		$stdid_created = mysqli_insert_id($con);
-
-		$sql_user_role = "INSERT INTO user_role (user_id, std_id, role) VALUES ('".$stdid_created."','".$stdid_created."','student')";
-		$sql_user_role_add = mysqli_query($con,$sql_user_role);
-		
-		$sql1 = "SELECT * FROM user_temp WHERE relation LIKE 'father' AND std_id=" . $stdid_created;
-		$select1 = mysqli_query($con,$sql1);
-		$numrows1 = mysqli_num_rows($select1);
-		$rows1 = array();
-		while($row1=mysqli_fetch_array($select1))
-			$rows1[]= $row1;
-		for ($i=0; $i < $numrows1; $i++)
-		{
-			$sql_user = "INSERT INTO user (lname,fname,mname,email,phone_num,role) 
-						 VALUES ('".$rows1[$i]['lname']."','" .$rows1[$i]['fname'] . "','".$rows1[$i]['mname']."')";
-			$sql_user_add = mysqli_query($con,$sql_user);
-		}
-		/*
-		$sql_parent = "SELECT * FROM user_temp WHERE std_num LIKE '". $rows[$i]['std_num'] ."'";
-
-		$select_parent = mysqli_query($con,$sql_parent);
-		$numrows_parent = mysqli_num_rows($select_parent);
-		$rows_parent = array();
-		while($row_parent=mysqli_fetch_array($select_parent))
-			$rows_parent[] = $row_parent;
-		for ($i=0; $i < $numrows_parent; $i++)
-		{
-			$rows[$i]['lname'] 
-			//echo $rows[$i]['lname']	.	" "	.	$rows[$i]['fname']	. " ".$z++ .	"<br>";
-		}
-		*/
-		//echo ($sql_user_add && $sql_user_role_add) ? "success" : "fail";
-	}
+		//delete all records from user_temp
+		$sql_delete = "DELETE FROM user_temp";
+		mysqli_query($con,$sql_delete);
+	}//end of if select
 ?>
