@@ -14,7 +14,7 @@
 		for ($i=0; $i < mysqli_num_rows($select); $i++)
 		{	//this for every std_num
 			//create user account (student)
-			$sql_std = "INSERT INTO user (lname) VALUES ('')";
+			$sql_std = "INSERT INTO user (lname,fname,mname) VALUES ('".$rows[$i]['std_lname']."','".$rows[$i]['std_fname']."','".$rows[$i]['std_mname']."')";
 			mysqli_query($con,$sql_std);
 			//get id of last inserted user (student)
 			$stdid_created = mysqli_insert_id($con);

@@ -5,7 +5,7 @@
 	ENCLOSED BY '\"' 
 	LINES TERMINATED BY '\n'
 	IGNORE 2 LINES
-	(group_id, std_num, relation, lname, fname, mname, email, phone_num);";
+	(group_id, std_num, std_lname, std_fname, std_mname, relation, lname, fname, mname, email, phone_num);";
 	echo mysqli_query($con,$sql);
 	mysqli_close($con);
 ?>
