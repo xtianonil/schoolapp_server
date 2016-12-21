@@ -8,8 +8,8 @@
 		include "db.php";
 		$sql = "INSERT INTO user_group (group_name, group_type, moderator_id)
 				VALUES ( '" . mysql_real_escape_string($_POST["groupname"]) 		. "'," 	.
-						"'" . mysql_real_escape_string($_POST["grouptype"]) 		. "'," 	.
-						" " . mysql_real_escape_string($_POST["groupmod"]) 			. "  "	.
+						"'" . mysql_real_escape_string($_POST["grouptype"]) 		. "'".//," 	.
+						//" " . mysql_real_escape_string($_POST["groupmod"]) 			. "  "	.
 				")";
 		$query_add = mysqli_query($con,$sql);
 		echo $query_add;

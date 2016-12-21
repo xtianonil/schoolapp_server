@@ -12,14 +12,22 @@
 	}
  */
  ?>
+
 <?php
-	
+	// checking for minimum PHP version
+	if (version_compare(PHP_VERSION, '5.3.7', '<')) {
+    	exit("Sorry, this feature does not run on a PHP version smaller than 5.3.7 !");
+	} else if (version_compare(PHP_VERSION, '5.5.0', '<')) {
+    	// if you are using PHP 5.3 or PHP 5.4 you have to include the password_api_compatibility_library.php
+    	// (this library adds the PHP 5.5 password hashing functions to older versions of PHP)
+    	require_once("libraries/password_compatibility_library.php");
+	}
 	if(isset($_POST['login']))
 	{
 		include "db.php";
 		//$username=mysqli_real_escape_string(htmlspecialchars(trim($_POST['username'])));
 		//$password=mysqli_real_escape_string(htmlspecialchars(trim($_POST['password'])));
-		$username = $_POST['username'];
+		$email = $_POST['email_login'];
 		$password = $_POST['password'];
 
 		/*
@@ -34,7 +42,7 @@
 		}
 		*/
 
-		$sql = "select * from `user` where `username`='$username' and `password`='$password'";
+		$sql = "select * from `user` where `email`='$email_login' and `password`='$password'";
 		$select = mysqli_query($con,$sql);
 		$numrows = mysqli_num_rows($select);
 		if ($numrows > 0)

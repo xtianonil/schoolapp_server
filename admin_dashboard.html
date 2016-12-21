@@ -21,14 +21,14 @@
 
 		function truncateTable(tablename)
 		{
-			$.post("http://192.168.0.18/school_connect_server/table_trunc.php",{table:tablename})
+			$.post("http://192.168.0.12/school_connect_server/table_trunc.php",{table:tablename})
 				.done(function(data){
 					//do something
 				});
 		}//end of truncateTable
 		function populateUsersList()
 		{
-			$.post("http://192.168.0.18/school_connect_server/user_listnonadmin.php")
+			$.post("http://192.168.0.12/school_connect_server/user_listnonadmin.php")
 				.done(function(data){
 					var users = JSON.parse(data);
 					$(".users_affinity_list").empty();
@@ -40,7 +40,7 @@
 		}//end of populateUsersList
 		function showUserType()
 		{
-			$.post("http://192.168.0.18/school_connect_server/user_listspecific.php",{userid:$(".users_affinity_list").val()})
+			$.post("http://192.168.0.12/school_connect_server/user_listspecific.php",{userid:$(".users_affinity_list").val()})
 				.done(function(data){
 					var user = JSON.parse(data);
 			
@@ -57,7 +57,7 @@
 		}//end of showUserType
 
 		$(".user_affinity_btn").click(function(){
-			$.post("http://192.168.0.18/school_connect_server/user_affinity.php")
+			$.post("http://192.168.0.12/school_connect_server/user_affinity.php")
 				.done(function(data){
 					alert("Operation successful.");
 				});
@@ -80,7 +80,7 @@
 			});//end of truncate_btn.click
 			
 		$(".load_newusers_btn").click(function(){
-			$.post("http://192.168.0.18/school_connect_server/csv_insert_newusers.php")
+			$.post("http://192.168.0.12/school_connect_server/csv_insert_newusers.php")
 				.done(function(data){
 					alert("Operation successful.");
 				});

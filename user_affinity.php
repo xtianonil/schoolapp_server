@@ -19,7 +19,7 @@
 			//get id of last inserted user (student)
 			$stdid_created = mysqli_insert_id($con);
 			//create record on user_role (student)
-			$sql_std_role = "INSERT INTO user_role (std_id,role,group_id) VALUES ('".$stdid_created."','student',".$rows[$i]['group_id'].")";
+			$sql_std_role = "INSERT INTO user_role (user_id,std_id,role,group_id) VALUES ('".$stdid_created."','".$stdid_created."','student',".$rows[$i]['group_id'].")";
 			mysqli_query($con,$sql_std_role);
 
 			//iterate through ALL users
@@ -44,8 +44,8 @@
 						mysqli_query($con,$sql_father);
 						$fatherid_created = mysqli_insert_id($con);
 						//create user acct for std_id's father
-						$sql_father_role = "INSERT INTO user_role (std_id,parent_id,parent_type,role,group_id) 
-											VALUES ('".$stdid_created."','".$fatherid_created."','father','parent',".$rows_users[$j]['group_id'].")";
+						$sql_father_role = "INSERT INTO user_role (user_id,std_id,parent_id,parent_type,role,group_id) 
+											VALUES ('".$fatherid_created."','".$stdid_created."','".$fatherid_created."','father','parent',".$rows_users[$j]['group_id'].")";
 						mysqli_query($con,$sql_father_role);
 					}
 					else if ( $rows_users[$j]['relation'] === "mother" )
@@ -59,8 +59,8 @@
 						mysqli_query($con,$sql_mother);
 						$motherid_created = mysqli_insert_id($con);
 						//create user acct for std_id's mother
-						$sql_mother_role = "INSERT INTO user_role (std_id,parent_id,parent_type,role,group_id) 
-											VALUES ('".$stdid_created."','".$motherid_created."','mother','parent',".$rows_users[$j]['group_id'].")";
+						$sql_mother_role = "INSERT INTO user_role (user_id,std_id,parent_id,parent_type,role,group_id) 
+											VALUES ('".$motherid_created."','".$stdid_created."','".$motherid_created."','mother','parent',".$rows_users[$j]['group_id'].")";
 						mysqli_query($con,$sql_mother_role);
 					}
 					else if ( $rows_users[$j]['relation'] === "guardian" )
@@ -74,8 +74,8 @@
 						mysqli_query($con,$sql_guardian);
 						$guardianid_created = mysqli_insert_id($con);
 						//create user acct for std_id's guardian
-						$sql_guardian_role = "INSERT INTO user_role (std_id,parent_id,parent_type,role,group_id) 
-											VALUES ('".$stdid_created."','".$guardianid_created."','guardian','parent',".$rows_users[$j]['group_id'].")";
+						$sql_guardian_role = "INSERT INTO user_role (user_id,std_id,parent_id,parent_type,role,group_id) 
+											VALUES ('".$guardianid_created."','".$stdid_created."','".$guardianid_created."','guardian','parent',".$rows_users[$j]['group_id'].")";
 						mysqli_query($con,$sql_guardian_role);
 					}
 				}//end of for for
